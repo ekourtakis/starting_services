@@ -17,7 +17,12 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.startButton).setOnClickListener {
             Log.d("Button", "clicked")
-            startService(Intent(this, TimerService::class.java))
+            var num: Int
+            if (editText.text.toString().isEmpty())
+                num = 100
+            else
+                num = editText.text.toString().toInt()
+            startService(Intent(this, TimerService::class.java).putExtra("key", num))
         }
     }
 

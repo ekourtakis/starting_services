@@ -11,9 +11,11 @@ import kotlinx.coroutines.launch
 
 class TimerService : Service() {
     private val serviceScope = CoroutineScope(Dispatchers.IO + Job())
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startTimer()
+        val num = intent?.getIntExtra("key", 100)
+        if (num != null) {
+            startTimer(num)
+        }
         return START_STICKY
     }
 
@@ -21,12 +23,13 @@ class TimerService : Service() {
         return null
     }
 
-    private fun startTimer() {
+    private fun startTimer(num: Int) {
         serviceScope.launch {
-            for (i in 100 downTo 0) {
+            for (i in num downTo 0) {
                 Log.d("Timer", i.toString())
-                Thread.sleep(1000) // 1-second delay
+                Thread.sleep(1000)
             }
+            Log.d("Timer", "finished")
             stopSelf()
         }.start()
     }
